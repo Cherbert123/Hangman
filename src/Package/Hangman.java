@@ -31,6 +31,9 @@ public class Hangman implements KeyListener  {
 	panel.add(label);
 	label.setText(labelText);
 	frame.setVisible(true);
+	frame.addKeyListener(this);
+	frame.pack();
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	try {
 		BufferedReader br = new BufferedReader(new FileReader("src/dictionary.txt"));
 		try {
@@ -45,6 +48,8 @@ public class Hangman implements KeyListener  {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+		labelText = "";
+		label.setText(labelText);
 		System.out.println(word);
 		for(int i =0; i < word.length();i++) 
 		{labelText = labelText + "_";}
@@ -52,11 +57,44 @@ public class Hangman implements KeyListener  {
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
-		for(int i = 1; i < word.length(); i++) {
-		if(e.getKeyChar() == word.charAt(i)) {
-		String part1 = labelText.substring(0, i);
-		}
-		}
+		if(labelText.equalsIgnoreCase(word)) {
+			int wordNum = find.nextInt(2998);
+
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new FileReader("src/dictionary.txt"));
+
+					for(int i =0; i < wordNum;i++) {
+					try {
+						word = br.readLine();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					}
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				labelText = "";
+				System.out.println(word);
+				for(int i =0; i < word.length();i++) 
+				{labelText = labelText + "_";}
+				label.setText(labelText);
+			
+		}else {
+		for (int i = 0; i < labelText.length(); i++) {
+			if(word.charAt(i) == e.getKeyChar()) {
+				if(labelText.charAt(i) == '_') {
+				String part1 = labelText.substring(0, i);
+				String part2 = labelText.substring(i + 1, labelText.length());
+				labelText = part1 + e.getKeyChar() + part2;
+				label.setText(labelText);
+				System.out.println("correct");
+				}
+			}
+		}	
+	}
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
