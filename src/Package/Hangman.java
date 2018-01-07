@@ -23,7 +23,7 @@ public class Hangman implements KeyListener  {
 	JLabel label = new JLabel();
 	JLabel livesL = new JLabel();
 	String labelText = "";
-	int lives = 5;
+	int lives = 20;
 	ArrayList<String> words = new ArrayList<String>();
 	public static void main(String[] args){
 		Hangman runner = new Hangman();
@@ -39,7 +39,7 @@ public class Hangman implements KeyListener  {
 	frame.addKeyListener(this);
 	frame.pack();
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	for (int o = 0; o < 6; o++) {
+	for (int o = 0; o < 4; o++) {
 		wordNum = find.nextInt(2998);
 	try {
 		BufferedReader br = new BufferedReader(new FileReader("src/dictionary.txt"));
@@ -65,7 +65,6 @@ public class Hangman implements KeyListener  {
 		
 		labelText = "";
 		label.setText(labelText);
-		System.out.println(word);
 		for(int i =0; i < word.length();i++) 
 		{labelText = labelText + "_";}
 		label.setText(labelText);
@@ -91,7 +90,6 @@ public class Hangman implements KeyListener  {
 				word = words.get(w);
 				words.remove(w);
 				labelText = "";
-				System.out.println(word);
 				for(int i =0; i < word.length();i++) 
 				{labelText = labelText + "_";}
 				label.setText(labelText);
@@ -106,7 +104,6 @@ public class Hangman implements KeyListener  {
 				String part2 = labelText.substring(i + 1, labelText.length());
 				labelText = part1 + e.getKeyChar() + part2;
 				label.setText(labelText);
-				System.out.println("correct");
 				}
 			}else {
 				if(lives<=0) {
@@ -119,8 +116,19 @@ public class Hangman implements KeyListener  {
 			
 		}	
 		if(fails >= labelText.length()) {
+			if(lives<=0) {
+				labelText = "You Lose!!";
+				label.setText(labelText);
+				livesL.setText("");
+			}else {
 			lives = lives - 1;
 			livesL.setText("Lives: " + lives);
+			}
+			if(lives<=0) {
+				labelText = "You Lose!!";
+				label.setText(labelText);
+				livesL.setText("");
+			}
 		}
 	}
 	}
